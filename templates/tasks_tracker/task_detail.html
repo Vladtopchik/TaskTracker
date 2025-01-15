@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>{{ task.title }} - Task Details</title>
+    <link rel="stylesheet" href="{{ static('css/task_detail.css') }}">
+{% endblock %}
+{% block body %}
+    <h1>{{ task.title }}</h1>
+    <h2>{{ task.description }}</h2>
+    <p><span class="label">Status:</span> {{ task.status }}</p>
+    <p><span class="label">Priority:</span>
+        <span class="priority" style="background-color: {{ colors[task.priority] }};">{{ task.priority }}</span>
+    </p>
+    <p><span class="label">Due date:</span> {{ task.due_date }}</p>
+    <p><span class="label">Creator:</span> {{ task.creator }}</p>
+    <div class="add_comment">
+        <p>Add comment!</p>
+        <form method="post">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            {{ comment_form.as_p() }}
+            <button>Post</button>
+        </form>
+    </div>
+    <div class="comments">
+        {% for comment in task.comments.all() %}
+            <div>
+                <small>{{ comment.author.username }}</small>
+                <p>{{ comment.content }}</p>
+                <small>{{ comment.created_at }}</small>
+            </div>
+        {% else %}
+            <div>No comments here.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

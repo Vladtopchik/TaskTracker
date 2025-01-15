@@ -17,11 +17,9 @@
                 <a href="{{ url('task-detail', args=[task.pk]) }}">{{ task.title }}</a>
                 <span>{{ task.status }}</span>
                 <span style="color: {{ colors[task.priority] }}">{{ task.priority }}</span>
-                <a href="{{ url('task-update', args=[task.pk]) }}" class="edit">
-                    <button type="button">
-                        Edit
-                    </button>
-                </a>
+                <button class="edit">
+                    <a href="{{ url('task-update', args=[task.pk]) }}">Edit</a>
+                </button>
             </div>
         {% else %}
             <div class="no-tasks">No tasks here</div>

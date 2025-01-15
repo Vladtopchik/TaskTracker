@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>delete</title>
+</head>
+<body>
+    <h1>Are you sure???????????????????????? You will lost your pc</h1>
+    <p>{{ object.title }}</p>
+    <form method="post">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <button type="submit">Delete</button>
+        <button><a href="/">Hello</a></button>
+    </form>
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task, Comment
+from .models import Task
 
 
 class TaskForm(forms.ModelForm):
@@ -29,9 +29,5 @@ class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False, label='Статус')
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = [
-            "content",
-        ]
+class CommentForm(forms.Form):
+    ...

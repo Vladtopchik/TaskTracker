@@ -1,10 +1,8 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Task
-from .forms import TaskForm, TaskFilterForm, CommentForm
+from .forms import TaskForm, TaskFilterForm
 from .mixins import IsUserOwnerMixin
 from core.utils import current
 
@@ -38,6 +36,7 @@ class TaskListView(ListView):
         context = super().get_context_data(**kwargs)
         context['form'] = TaskFilterForm(self.request.GET)
         context['colors'] = priority_colors
+        context['page'] = 'list'
         context['current'] = current('list')
 
         return context
@@ -47,22 +46,11 @@ class TaskDetailView(DetailView):
     model = Task
     context_object_name = "task"
 
-    def post(self, request, *args, **kwargs):
-        comment_form = CommentForm(request.POST)
-
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=True)
-            comment.author = request.user
-            comment.task = self.get_object()
-            comment.save()
-
-            return redirect('task-detail', pk=comment.task.pk, )
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['colors'] = priority_colors
+        context['page'] = 'detail'
         context['current'] = current('detail')
-        context['comment_form'] = CommentForm()
 
         return context
 
@@ -99,10 +87,12 @@ class TaskUpdateView(IsUserOwnerMixin, UpdateView):
 
 class TaskDeleteView(IsUserOwnerMixin, DeleteView):
     model = Task
+    form_class = TaskForm
     success_url = reverse_lazy('task-list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['page'] = 'delete'
         context['current'] = current('delete')
 
         return context
