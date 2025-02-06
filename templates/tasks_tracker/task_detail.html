@@ -4,31 +4,55 @@
     <link rel="stylesheet" href="{{ static('css/task_detail.css') }}">
 {% endblock %}
 {% block body %}
-    <h1>{{ task.title }}</h1>
-    <h2>{{ task.description }}</h2>
-    <p><span class="label">Status:</span> {{ task.status }}</p>
-    <p><span class="label">Priority:</span>
-        <span class="priority" style="background-color: {{ colors[task.priority] }};">{{ task.priority }}</span>
-    </p>
-    <p><span class="label">Due date:</span> {{ task.due_date }}</p>
-    <p><span class="label">Creator:</span> {{ task.creator }}</p>
-    <div class="add_comment">
-        <p>Add comment!</p>
-        <form method="post">
+    <div class="detail">
+        <h1>{{ task.title }}</h1>
+        <h2>{{ task.description }}</h2>
+        <p><span class="label">Status:</span> {{ task.status }}</p>
+        <p><span class="label">Priority:</span>
+            <span class="priority" style="background-color: {{ colors[task.priority] }};">{{ task.priority }}</span>
+        </p>
+        <p><span class="label">Due date:</span> {{ task.due_date }}</p>
+        <p><span class="label">Creator:</span> {{ task.creator }}</p>
+    </div>
+
+    <div class="add-comment">
+        <p>Leave your comment</p>
+        <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <div id="rating">
+                <span class="rating" data-val="1">★</span>
+                <span class="rating" data-val="2">★</span>
+                <span class="rating" data-val="3">★</span>
+                <span class="rating" data-val="4">★</span>
+                <span class="rating" data-val="5">★</span>
+            </div>
             {{ comment_form.as_p() }}
-            <button>Post</button>
+            <button type="submit">➤</button>
         </form>
     </div>
-    <div class="comments">
-        {% for comment in task.comments.all() %}
-            <div>
-                <small>{{ comment.author.username }}</small>
-                <p>{{ comment.content }}</p>
-                <small>{{ comment.created_at }}</small>
-            </div>
-        {% else %}
-            <div>No comments here.</div>
-        {% endfor %}
-    </div>
+    {% for comment in task.comments.all() %}
+        <div class="comment">
+            <span class="author"><b>{{ comment.author.username }}</b></span>
+            <small>{{ comment.created_at }}</small>
+            <p class="rate">{{ star(comment.rating) }}</p>
+            <p class="content">{{ comment.content }}</p>
+            {% if comment.media %}
+                {% if comment.media.url.lower().endswith(('.jpg', '.png', '.jpeg')) %}
+                    <img src="{{ comment.media.url }}" style="max-width: 300px;" alt="Comment's picture">
+                {% elif comment.media.url.lower().endswith('.mp4') %}
+                    <video width="320" height="240" controls>
+                        <source src="{{ comment.media.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <a href="{{ comment.media.url }}">Завантажити файл</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% else %}
+        <div>No comments here.</div>
+    {% endfor %}
+{% endblock %}
+{% block scripts %}
+    <script src="{{ static('js/task_detail.js') }}"></script>
 {% endblock %}

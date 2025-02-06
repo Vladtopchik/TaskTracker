@@ -15,6 +15,11 @@
             <ul>
                 <li><a class="{{ current('list') }}" href="{{ url('task-list') }}">My tasks</a></li>
                 <li><a class="{{ current('create') }}" href="{{ url('task-create') }}">New task</a></li>
+                {% if auth %}
+                    <li><a class="{{ current('logout') }}" href="{{ url('logout') }}">Log out</a></li>
+                {% else %}
+                    <li><a class="{{ current('login') }}" href="{{ url('login') }}">Log in</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -22,5 +27,7 @@
         {% block body %}
         {% endblock %}
     </div>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>

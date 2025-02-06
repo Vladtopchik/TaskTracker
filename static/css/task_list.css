@@ -36,11 +36,15 @@ form button {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center; 
     gap: 10px; 
     font-size: 18px;
     padding: 20px;
+}
+
+.task-item > span {
+    text-align: center;
 }
 
 .task-item > a {
@@ -66,15 +70,18 @@ form button {
 }
 
 .edit button {
+    position: absolute;
+    right: 0;
     margin-left: auto;
     border-radius: 8px;
     padding-block: 4px;
     padding-inline: 10px;
-}x
+}
 
 .edit {
     position: relative;
     color: white;
     text-decoration: none;
     display: inline-block;
+    height: 23.43px;
 }

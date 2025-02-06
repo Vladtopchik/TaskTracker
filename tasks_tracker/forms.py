@@ -33,5 +33,22 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = [
+            "rating",
             "content",
+            "media"
         ]
+        widgets = {
+            'media': forms.FileInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["content"].label = ""
+        self.fields["rating"].label = ""
+
+        self.fields["rating"].initial = 5
+        self.fields["rating"].widget.attrs.update({
+            "min": "1",
+            "max": "5",
+            "hidden": "true"
+        })

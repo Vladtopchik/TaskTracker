@@ -88,3 +88,7 @@ nav li > a:hover:not(.current):after {
 .current {
     font-weight: bold;
 }
+
+.errorlist {
+    color: red;
+}

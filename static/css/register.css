@@ -1,0 +1,83 @@
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+p {
+    position: relative;
+}
+
+.form-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    border-color: #008CBA;
+    outline: none;
+}
+
+button.submit-btn {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button.submit-btn:hover {
+    background-color: #0077A3;
+}
+
+.helptext, ul {
+    color: gray;
+    display: block;
+    font-size: 15px;
+}
+
+.password-visibility {
+    position: relative;
+    background: none !important;
+    color: black;
+    height: 40px;
+    top: 7px;
+    display: inline-flex;
+    align-items: center; 
+    justify-content: center;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+}
+
+.warn {
+    color: red;
+    display: block;
+    font-size: 12px; 
+    margin-block: 10px;
+}
+
+.hidden {
+    display: none;
+}

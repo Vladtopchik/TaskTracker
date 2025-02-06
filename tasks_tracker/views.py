@@ -1,12 +1,11 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Task
 from .forms import TaskForm, TaskFilterForm, CommentForm
-from .mixins import IsUserOwnerMixin
-from core.utils import current
+from core.mixins import IsUserOwnerMixin
+from core.utils import current, star
 
 status_colors = {
     "todo": "#ffe100",
@@ -39,6 +38,7 @@ class TaskListView(ListView):
         context['form'] = TaskFilterForm(self.request.GET)
         context['colors'] = priority_colors
         context['current'] = current('list')
+        context['auth'] = self.request.user.is_authenticated
 
         return context
 
@@ -48,21 +48,23 @@ class TaskDetailView(DetailView):
     context_object_name = "task"
 
     def post(self, request, *args, **kwargs):
-        comment_form = CommentForm(request.POST)
+        comment_form = CommentForm(request.POST, request.FILES)
 
         if comment_form.is_valid():
-            comment = comment_form.save(commit=True)
+            comment = comment_form.save(commit=False)
             comment.author = request.user
             comment.task = self.get_object()
             comment.save()
 
-            return redirect('task-detail', pk=comment.task.pk, )
+            return redirect('task-detail', pk=comment.task.pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['colors'] = priority_colors
         context['current'] = current('detail')
         context['comment_form'] = CommentForm()
+        context['star'] = star
+        context['auth'] = self.request.user.is_authenticated
 
         return context
 
@@ -76,6 +78,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['page'] = 'create'
         context['current'] = current('create')
+        context['auth'] = self.request.user.is_authenticated
 
         return context
 
@@ -93,6 +96,7 @@ class TaskUpdateView(IsUserOwnerMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['page'] = 'update'
         context['current'] = current('update')
+        context['auth'] = self.request.user.is_authenticated
 
         return context
 
@@ -104,5 +108,6 @@ class TaskDeleteView(IsUserOwnerMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current'] = current('delete')
+        context['auth'] = self.request.user.is_authenticated
 
         return context

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-   <form method="get">
+    <form method="get">
         {{ form.status.label_tag() }}
         {{ form.status }}
         <button type="submit">Фільтрувати</button>
@@ -18,9 +18,7 @@
                 <span>{{ task.status }}</span>
                 <span style="color: {{ colors[task.priority] }}">{{ task.priority }}</span>
                 <a href="{{ url('task-update', args=[task.pk]) }}" class="edit">
-                    <button type="button">
-                        Edit
-                    </button>
+                    <button type="button">Edit</button>
                 </a>
             </div>
         {% else %}

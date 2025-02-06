@@ -3,3 +3,7 @@ def current(cpath: str, name: str = 'current'):
         return name if cpath == path else ''
 
     return wrapper
+
+
+def star(rate: int):
+    return '★ ' * rate + '☆ ' * (5 - rate)
